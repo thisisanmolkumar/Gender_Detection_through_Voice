@@ -33,7 +33,6 @@ def pred():
     if flag:
         return redirect(url_for('main'))
 
-    # predfinal = predict.main(False, False, 'Female.wav')
     predfinal = predict.main()
 
     flag = True
