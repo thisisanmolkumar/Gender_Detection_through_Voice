@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/326d1e3b3f.js" crossorigin="anonymous"></script>
+    <title>Gender Prediction</title>
+</head>
+<body>
+    <div class="container">
+        {% for i, k in enumerate(col.keys()) %}
+            {% if i == 45 %}
+                <a id="bt" class="colbt" href="predict"><i class="fas fa-microphone-alt fa-5x"></i></a>
+            {% elif i in mine %}
+                <div id="genbox" class="colbt"><i id="gen"></i></div>
+            {% else %}
+                <div id="box"></div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var minestr = "{{ mine }}";
+            var colstr = "{{ col }}";
+
+            var mine = [];
+            var col = {};
+
+            var ind = [];
+            for (let i = 0; i < minestr.length; i++) {
+                if ((minestr[i] === ",") || (minestr[i] === "]"))
+                    ind.push(i);
+            }
+            for (i in ind) {
+                var temp = "";
+                
+                for (let j = ind[i] - 1; j >= ind[i] - 3; j--) {
+                    if ((minestr[j] != " ") && (minestr[j] != "[")) {
+                        temp = temp.concat(minestr[j].toString());
+                    } else {
+                        break;
+                    }
+                }
+
+                temp = temp.split("").reverse().join("");
+                mine.push(parseInt(temp));
+            }
+
+            ind = [];
+            for (let i = 0; i < colstr.length; i++) {
+                if (colstr[i] === ":") 
+                    ind.push(i);
+            }
+            for (i in ind) {
+                var temp = "";
+                
+                for (let j = ind[i] - 1; j >= ind[i] - 3; j--) {
+                    if ((colstr[j] != " ") && (colstr[j] != "{")) {
+                        temp = temp.concat(colstr[j].toString());
+                    } else {
+                        break;
+                    }
+                }
+
+                temp = temp.split("").reverse().join("");
+                col[temp] = colstr[ind[i] + 2];
+            }
+
+            for (i in col) {
+                if (!mine.includes(i)) {
+                    var x = "div#box:eq(".concat(i.toString()).concat(")");
+                    $(x).addClass("col".concat(col[i].toString()))
+                }
+            }
+
+            if ("{{ pred }}" == "male") {
+                $("div#box").each(function(i) {
+                    var temp = $(this);
+                    setTimeout(function() {
+                        if (mine.includes(i)) {
+                            var s = "i#gen:eq(".concat(mine.indexOf(i).toString()).concat(")")
+                            $(s).addClass("fas fa-male fa-5x");
+                        }
+                        if (temp.attr('class') != "col0") {
+                            temp.removeClass(temp.attr("class"));
+                            temp.addClass("col6");
+                    }}, i * 25);
+                });
+            } else if ("{{ pred }}" == "female") {
+                $("div#box").each(function(i) {
+                    var temp = $(this);
+                    setTimeout(function() {
+                        if (mine.includes(i)) {
+                            var s = "i#gen:eq(".concat(mine.indexOf(i).toString()).concat(")")
+                            $(s).addClass("fas fa-female fa-5x");
+                        }
+                        if (temp.attr('class') != "col0") {
+                            temp.removeClass(temp.attr("class"));
+                            temp.addClass("col8");
+                    }}, i * 25);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
