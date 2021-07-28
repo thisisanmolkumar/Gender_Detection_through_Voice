@@ -15,5 +15,5 @@
   - Load the weights to model, predict and return the results
 - **GUI**
   - Created a random grid of colours using HTML and CSS on Flask
-  - Added buttons for turning on the mic
+  - Added button for turning on the mic
   - Animation using jQuery
