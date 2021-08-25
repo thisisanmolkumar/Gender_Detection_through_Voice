@@ -4,7 +4,7 @@
   - Extracted files with Gender attribute
   - Removed extra data from one gender to keep the dataset balanced
   - Processed the data and extracted **Mel Spectogram Feature** using Librosa
-  - Saved all the features in .npy files and all the information in **finaldata.csv**
+  - Saved all the features in **.npy** files and all the information in **finaldata.csv**
 - **Training**
   - Loaded all the data
   - Created a model with 5 fully connected layers with 20% dropout rate
